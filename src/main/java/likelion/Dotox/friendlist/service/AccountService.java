@@ -1,4 +1,4 @@
-package likelion.Dotox.service;
+package likelion.Dotox.friendlist.service;
 
 import likelion.Dotox.friendlist.repository.AccountRepository;
 import likelion.Dotox.friendlist.entity.Account;

@@ -3,7 +3,7 @@ package likelion.Dotox.friendlist.controller;
 import jakarta.servlet.http.HttpSession;
 import likelion.Dotox.friendlist.dto.AccountDTO;
 import likelion.Dotox.friendlist.entity.Account;
-import likelion.Dotox.service.AccountService;
+import likelion.Dotox.friendlist.service.AccountService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

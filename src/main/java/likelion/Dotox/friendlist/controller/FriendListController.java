@@ -2,7 +2,7 @@ package likelion.Dotox.friendlist.controller;
 
 import io.swagger.annotations.ApiOperation;
 import likelion.Dotox.friendlist.dto.FriendListDTO;
-import likelion.Dotox.service.FriendListServiceImpl;
+import likelion.Dotox.friendlist.service.FriendListServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

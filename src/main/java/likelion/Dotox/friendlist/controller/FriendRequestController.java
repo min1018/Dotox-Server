@@ -1,6 +1,6 @@
 package likelion.Dotox.friendlist.controller;
 
-import likelion.Dotox.service.FriendRequestServiceImpl;
+import likelion.Dotox.friendlist.service.FriendRequestServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -1,4 +1,4 @@
-package likelion.Dotox.service;
+package likelion.Dotox.friendlist.service;
 
 import likelion.Dotox.friendlist.repository.AccountRepository;
 import likelion.Dotox.friendlist.repository.FriendListRepository;
@@ -8,6 +8,7 @@ import likelion.Dotox.friendlist.dto.FriendListDTO;
 import likelion.Dotox.friendlist.entity.Account;
 import likelion.Dotox.friendlist.entity.FriendList;
 import likelion.Dotox.friendlist.entity.FriendRequest;
+import likelion.Dotox.friendlist.service.FriendRequestService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

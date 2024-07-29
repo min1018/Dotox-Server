@@ -1,4 +1,4 @@
-package likelion.Dotox.service;
+package likelion.Dotox.friendlist.service;
 
 import java.util.List;
 

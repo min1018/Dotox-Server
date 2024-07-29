@@ -23,13 +23,16 @@ public class Account {
     @Id
     @Column(name = "account_id")
     private String accountId;
-    private String pw;
-    @Column(name = "hash_salt")
-    private String hashSalt;
-    @Column(name = "pw_question")
-    private String pwQuestion;
+    //private String pw;
+//    @Column(name = "hash_salt")
+//    private String hashSalt;
+//    @Column(name = "pw_question")
+//    private String pwQuestion;
     @Column(name = "nick_name")
     private String nickName;
+
+    @Column(name = "email")
+    private String email;
 
     @OneToMany(mappedBy = "id1")
     private List<FriendList> friendlist1 = new ArrayList<FriendList>();

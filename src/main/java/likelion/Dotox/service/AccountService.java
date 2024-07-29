@@ -1,7 +1,7 @@
 package likelion.Dotox.service;
 
-import likelion.Dotox.model.dao.AccountRepository;
-import likelion.Dotox.model.entity.Account;
+import likelion.Dotox.friendlist.repository.AccountRepository;
+import likelion.Dotox.friendlist.entity.Account;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

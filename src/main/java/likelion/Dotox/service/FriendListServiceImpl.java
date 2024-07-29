@@ -1,14 +1,14 @@
 package likelion.Dotox.service;
 
-import likelion.Dotox.model.dao.AccountRepository;
-import likelion.Dotox.model.dao.FriendListRepository;
-import likelion.Dotox.model.dao.FriendRequestRepository;
-import likelion.Dotox.model.dto.AccountDTO;
-import likelion.Dotox.model.dto.FriendListDTO;
-import likelion.Dotox.model.dto.FriendRequestDTO;
-import likelion.Dotox.model.entity.Account;
-import likelion.Dotox.model.entity.FriendList;
-import likelion.Dotox.model.entity.FriendRequest;
+import likelion.Dotox.friendlist.repository.AccountRepository;
+import likelion.Dotox.friendlist.repository.FriendListRepository;
+import likelion.Dotox.friendlist.repository.FriendRequestRepository;
+import likelion.Dotox.friendlist.dto.AccountDTO;
+import likelion.Dotox.friendlist.dto.FriendListDTO;
+import likelion.Dotox.friendlist.dto.FriendRequestDTO;
+import likelion.Dotox.friendlist.entity.Account;
+import likelion.Dotox.friendlist.entity.FriendList;
+import likelion.Dotox.friendlist.entity.FriendRequest;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

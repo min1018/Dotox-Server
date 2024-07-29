@@ -1,6 +1,6 @@
 package likelion.Dotox.service;
 
-import likelion.Dotox.model.dto.FriendListDTO;
+import likelion.Dotox.friendlist.dto.FriendListDTO;
 
 import java.util.ArrayList;
 import java.util.List;

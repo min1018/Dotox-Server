@@ -29,6 +29,6 @@ public class LoginNextController {
             System.out.println("No OAuth2 response found in session.");
         }
 
-        return "loginNext";
+        return oAuth2Response.getProviderId();
     }
 }

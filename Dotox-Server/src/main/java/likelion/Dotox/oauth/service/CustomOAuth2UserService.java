@@ -60,7 +60,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             userEntity.setRole(role);
 
             Account accountEntity = new Account();
-            accountEntity.setAccountId(username);
+            accountEntity.setAccountId(oAuth2Response.getProviderId());
             userRepository.save(userEntity);
             accountRepository.save(accountEntity);
         } else {

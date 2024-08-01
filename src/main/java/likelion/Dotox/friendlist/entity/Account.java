@@ -43,6 +43,9 @@ public class Account {
     @Column(name = "age")
     private String age;
 
+    @Column(name = "time")
+    private int time;
+
     @OneToMany(mappedBy = "id1")
     private List<FriendList> friendlist1 = new ArrayList<FriendList>();
 

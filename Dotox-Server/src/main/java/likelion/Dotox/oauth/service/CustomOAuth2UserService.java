@@ -2,10 +2,10 @@ package likelion.Dotox.oauth.service;
 
 import jakarta.servlet.http.HttpSession;
 import likelion.Dotox.friendlist.repository.AccountRepository;
-import likelion.Dotox.friendlist.dto.GoogleResponse;
-import likelion.Dotox.friendlist.dto.NaverResponse;
-import likelion.Dotox.friendlist.dto.OAuth2Response;
-import likelion.Dotox.friendlist.dto.CustomOAuth2User;
+import likelion.Dotox.oauth.dto.GoogleResponse;
+import likelion.Dotox.oauth.dto.NaverResponse;
+import likelion.Dotox.oauth.dto.OAuth2Response;
+import likelion.Dotox.oauth.dto.CustomOAuth2User;
 import likelion.Dotox.oauth.entity.UserEntity;
 import likelion.Dotox.friendlist.entity.Account;
 import likelion.Dotox.oauth.repository.UserRepository;
@@ -60,7 +60,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             userEntity.setRole(role);
 
             Account accountEntity = new Account();
-            accountEntity.setAccountId(username);
+            accountEntity.setAccountId(oAuth2Response.getProviderId());
+            accountEntity.setEmail(oAuth2Response.getEmail());
             userRepository.save(userEntity);
             accountRepository.save(accountEntity);
         } else {

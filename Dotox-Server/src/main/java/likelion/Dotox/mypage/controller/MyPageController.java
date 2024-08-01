@@ -6,7 +6,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
+@RestController
 @RequestMapping("/api")
 public class MyPageController {
     private final MyPageService myPageService;
@@ -17,6 +19,9 @@ public class MyPageController {
 
     @GetMapping("/{id}/mypage")
     public Account loadUserInfo(@PathVariable("id") String id) {
-        return myPageService.loadMyPage(id);
+
+        Account account = myPageService.loadMyPage(id);
+        System.out.println(account.getAccountId());
+        return account;
     }
 }

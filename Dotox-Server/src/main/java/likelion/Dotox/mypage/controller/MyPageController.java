@@ -15,7 +15,7 @@ public class MyPageController {
     private final MyPageService myPageService;
 
     @GetMapping("/{id}/myPage")
-    public String loadUserInfo(@PathVariable String id) {
+    public Account loadUserInfo(@PathVariable("id") String id) {
         System.out.println(id);
         Account account = myPageService.loadMyPage(id);
         if (account != null) {
@@ -23,6 +23,6 @@ public class MyPageController {
         } else {
             System.out.println("Account not found");
         }
-        return account.getAccountId();
+        return account;
     }
 }

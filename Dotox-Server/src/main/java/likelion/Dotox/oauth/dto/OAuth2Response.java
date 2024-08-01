@@ -1,4 +1,4 @@
-package likelion.Dotox.friendlist.dto;
+package likelion.Dotox.oauth.dto;
 
 public interface OAuth2Response {
 

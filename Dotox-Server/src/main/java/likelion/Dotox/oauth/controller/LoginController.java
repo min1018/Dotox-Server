@@ -1,14 +1,9 @@
 package likelion.Dotox.oauth.controller;
 
 import jakarta.servlet.http.HttpSession;
-import likelion.Dotox.friendlist.dto.OAuth2Response;
-import org.apache.coyote.Response;
+import likelion.Dotox.oauth.dto.OAuth2Response;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.net.URI;
-import java.net.http.HttpHeaders;
 
 @RestController
 public class LoginController {

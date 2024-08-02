@@ -31,4 +31,16 @@ public class HobbyService {
 
     }
 
+    public boolean initialUser(String id) {
+        Account userAccount = hobbyRepository.findByAccountId(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid account ID: " + id));
+
+        if (userAccount.getHobby() == null) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
 }

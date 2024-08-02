@@ -45,7 +45,7 @@ public class SecurityConfig {
                                 userInfoEndpointConfig.userService(customOAuth2UserService)
                         )
                         .successHandler(customSuccessHandler())
-                        .loginPage("/oauth2/authorization")
+//                        .loginPage("/oauth2/authorization")
                 );
 
         return http.build();

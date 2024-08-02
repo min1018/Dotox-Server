@@ -1,6 +1,5 @@
 package likelion.Dotox.friendlist.controller;
 
-import io.swagger.annotations.ApiOperation;
 import likelion.Dotox.friendlist.dto.FriendListDTO;
 import likelion.Dotox.friendlist.service.FriendListServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +16,6 @@ public class FriendListController {
     private FriendListServiceImpl friendListService;
 
     @GetMapping("findall")
-    @ApiOperation(value="밸류")
     public ArrayList<FriendListDTO> findAll() {
         System.out.println("friendlist/findAll() 실행----------------------------------");
         ArrayList<FriendListDTO> result = null;

@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,22 +23,21 @@ import java.util.Map;
 public class LoginController {
 
     private final HttpSession httpSession;
+    private final HobbyService hobbyService;
 
     @Autowired
-    HobbyService hobbyService;
-
-    public LoginController(HttpSession httpSession) {
+    public LoginController(HttpSession httpSession, HobbyService hobbyService) {
         this.httpSession = httpSession;
+        this.hobbyService = hobbyService;
     }
-
 
     @Operation(
             summary = "네이버 로그인 리다이렉트",
             description = "네이버 로그인"
     )
     @GetMapping("/oauth2/authorization/naver")
-    public String naverLogin() {
-        return "redirect:/oauth2/response";
+    public void naverLogin(HttpServletResponse response) throws IOException {
+        response.sendRedirect("/oauth2/authorization/naver");
     }
 
     @GetMapping("/oauth2/authorization/google")
@@ -44,10 +45,9 @@ public class LoginController {
             summary = "구글 로그인 리다이렉트",
             description = "구글 로그인"
     )
-    public String googleLogin() {
-        return "redirect:/oauth2/response";
+    public void googleLogin(HttpServletResponse response) throws IOException {
+        response.sendRedirect("/oauth2/authorization/google");
     }
-
 
     @GetMapping("/oauth2/response")
     @Operation(
@@ -61,7 +61,7 @@ public class LoginController {
     public ResponseEntity<Map<String, Object>> oauth2Response() {
         OAuth2Response oAuth2Response = (OAuth2Response) httpSession.getAttribute("oAuth2Response");
         if (oAuth2Response != null) {
-            String accountId =  (String) oAuth2Response.getProviderId();
+            String accountId = oAuth2Response.getProviderId();
             boolean isInitialUser = hobbyService.initialUser(accountId);
 
             Map<String, Object> response = new HashMap<>();
@@ -69,8 +69,7 @@ public class LoginController {
             response.put("isInitialUser", isInitialUser);
 
             return ResponseEntity.ok(response);
-        }
-        else {
+        } else {
             throw new IllegalArgumentException("No OAuth2 response found in session");
         }
     }

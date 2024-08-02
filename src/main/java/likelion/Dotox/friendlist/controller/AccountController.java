@@ -7,14 +7,13 @@ import likelion.Dotox.friendlist.service.AccountService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Controller
+@RequestMapping("/api")
+@RestController
 public class AccountController {
 
     @Autowired
@@ -149,7 +148,7 @@ public class AccountController {
     private ModelMapper modelMapper = new ModelMapper();
 
     @ResponseBody
-    @GetMapping("searchUser")
+    @GetMapping("/searchUser")
     public List<List<String>> searchUser(HttpSession session, String searching, String id) {
         System.out.println(searching);
 

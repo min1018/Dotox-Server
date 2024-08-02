@@ -10,13 +10,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("friendlist")
+@RequestMapping("/api/friendlist")
 public class FriendListController {
 
     @Autowired
     private FriendListServiceImpl friendListService;
 
-    @GetMapping("findall")
+    @GetMapping("/findall")
     @ApiOperation(value="밸류")
     public ArrayList<FriendListDTO> findAll() {
         System.out.println("friendlist/findAll() 실행----------------------------------");
@@ -25,7 +25,7 @@ public class FriendListController {
         return result;
     }
 
-    @GetMapping("findFriendListById1")
+    @GetMapping("/findFriendListById1")
     public List<List<String>> findFriendListById1(String id1) {
         System.out.println("friendlist/findFriendListById1() 실행----------------------------------");
         List<List<String>> result = null;
@@ -33,7 +33,7 @@ public class FriendListController {
         return result;
     }
 
-    @DeleteMapping("delete")
+    @DeleteMapping("/delete")
     public String delete(String id1,String id2) {
         System.out.println("friendlist/delete() 실행----------------------------------");
         String result = null;
@@ -41,7 +41,7 @@ public class FriendListController {
         return result;
     }
 
-    @PostMapping("post")
+    @PostMapping("/post")
     public String post(String id1, String id2) {
         System.out.println("friendlist/post() 실행----------------------------");
         String result = null;

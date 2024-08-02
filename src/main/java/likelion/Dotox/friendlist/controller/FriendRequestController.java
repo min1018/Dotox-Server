@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("friendrequest")
+@RequestMapping("/api/friendrequest")
 public class FriendRequestController {
 
     @Autowired
     private FriendRequestServiceImpl friendRequestService;
 
-    @GetMapping("findFriendRequestByRequestId")
+    @GetMapping("/findFriendRequestByRequestId")
     public List<List<String>> findFriendRequestByRequestId(String requestId) {
         List<List<String>> result = null;
         result = friendRequestService.findFriendRequestByRequestId(requestId);
@@ -25,21 +25,21 @@ public class FriendRequestController {
         return result;
     }
 
-    @GetMapping("findFriendRequestByRequestedId")
+    @GetMapping("/findFriendRequestByRequestedId")
     public List<List<String>> findFriendRequestByRequsetedId(String requestedId) {
         List<List<String>> result = null;
         System.out.println(requestedId);
         result = friendRequestService.findFriendRequestByRequestedId(requestedId);
         return result;
     }
-    @DeleteMapping("accept")
+    @DeleteMapping("/accept")
     public String accept(String id, String id1, String id2) {
         System.out.println("친구요청수락--------------------------------");
         String result = null;
         result = friendRequestService.accept(id,id1,id2);
         return result;
     }
-    @DeleteMapping("delete")
+    @DeleteMapping("/delete")
     public String delete(String id) {
         System.out.println("친구요청삭제--------------------------------");
         String result = null;

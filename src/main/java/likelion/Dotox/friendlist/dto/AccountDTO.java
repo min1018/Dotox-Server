@@ -15,13 +15,17 @@ import lombok.ToString;
 @ToString
 public class AccountDTO {
 
-    private String accountId;
-//    private String pw;
-//    private String hashSalt;
-//    private String pwQuestion;
-    private String nickName;
-    private String email;
-    private String hobby;
-    private String gender;
-    private String age;
+    private String accountId;  // 계정 ID
+
+    private String nickName;   // 닉네임
+
+    private String email;      // 이메일
+
+    private String hobby;      // 취미
+
+    private String gender;     // 성별
+
+    private String age;        // 나이
+
+    private Long screenTime;   // 스크린타임
 }

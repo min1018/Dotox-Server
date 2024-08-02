@@ -14,8 +14,10 @@ import lombok.ToString;
 @ToString
 @Builder
 public class FriendListDTO {
-    private int id;
-    private AccountDTO id1;
-    private AccountDTO id2;
 
+    private int id;         // 친구 목록 ID
+
+    private AccountDTO id1; // 사용자 1의 계정 정보
+
+    private AccountDTO id2; // 사용자 2의 계정 정보
 }

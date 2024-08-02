@@ -1,6 +1,5 @@
 package likelion.Dotox.friendlist.entity;
 
-import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -18,51 +17,49 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Schema(description = "사용자 계정 정보를 나타내는 엔티티")
 public class Account {
 
     @Id
     @Column(name = "account_id")
-    @Schema(description = "사용자의 고유 ID", example = "user123")
     private String accountId;
 
+    // 닉네임
     @Column(name = "nick_name")
-    @Schema(description = "사용자의 닉네임", example = "John")
     private String nickName;
 
+    // 이메일
     @Column(name = "email")
-    @Schema(description = "사용자의 이메일 주소", example = "john@example.com")
     private String email;
 
+    // 취미
     @Column(name = "hobby")
-    @Schema(description = "사용자의 취미", example = "독서")
     private String hobby;
 
+    // 성별
     @Column(name = "gender")
-    @Schema(description = "사용자의 성별", example = "남성")
     private String gender;
 
+    // 나이
     @Column(name = "age")
-    @Schema(description = "사용자의 나이", example = "30")
     private String age;
 
-    @Column(name = "time")
-    @Schema(description = "사용자가 활동한 시간", example = "120")
-    private int time;
+    // 스크린타임
+    @Column(name = "screen_time")
+    private Long screenTime;
 
+    // id1로 매핑된 친구 목록
     @OneToMany(mappedBy = "id1")
-    @Schema(description = "사용자와 관련된 친구 목록1")
     private List<FriendList> friendlist1 = new ArrayList<>();
 
+    // id2로 매핑된 친구 목록
     @OneToMany(mappedBy = "id2")
-    @Schema(description = "사용자와 관련된 친구 목록2")
     private List<FriendList> friendlist2 = new ArrayList<>();
 
+    // requestId로 매핑된 친구 요청 목록
     @OneToMany(mappedBy = "requestId")
-    @Schema(description = "사용자와 관련된 친구 요청 목록1")
     private List<FriendRequest> friendRequest1 = new ArrayList<>();
 
+    // requestedId로 매핑된 친구 요청 목록
     @OneToMany(mappedBy = "requestedId")
-    @Schema(description = "사용자와 관련된 친구 요청 목록2")
     private List<FriendRequest> friendRequest2 = new ArrayList<>();
 }

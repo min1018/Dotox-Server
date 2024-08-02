@@ -15,31 +15,30 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-
 public class FriendList implements Serializable {
 
-    // pk
+    // 기본 키
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
-    // 나의 아이디
+    // id1과의 매핑: 나의 아이디
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id1")
     @JsonIgnore
     private Account id1;
 
-    // 친구의 아이디
+    // id2과의 매핑: 친구의 아이디
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id2")
     @JsonIgnore
     private Account id2;
 
-    // 나의 스크린타임
+    // id1의 스크린타임
     @Column(name = "id1_screentime")
     private LocalDateTime id1ScreenTime;
 
-    // 친구의 스크린타임
+    // id2의 스크린타임
     @Column(name = "id2_screentime")
     private LocalDateTime id2ScreenTime;
 }

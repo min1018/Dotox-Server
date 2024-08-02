@@ -10,51 +10,64 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/friendrequest")
+@RequestMapping("friendrequest")
 public class FriendRequestController {
 
     @Autowired
     private FriendRequestServiceImpl friendRequestService;
 
-    @GetMapping("/findFriendRequestByRequestId")
+    /**
+     * 요청 ID로 친구 요청 조회
+     *
+     * @param requestId 요청 ID
+     * @return 요청 ID에 해당하는 친구 요청 목록을 계정 ID와 닉네임으로 묶어 List로 반환
+     */
+    @GetMapping("findFriendRequestByRequestId")
     public List<List<String>> findFriendRequestByRequestId(String requestId) {
-        List<List<String>> result = null;
-        result = friendRequestService.findFriendRequestByRequestId(requestId);
+        List<List<String>> result = friendRequestService.findFriendRequestByRequestId(requestId);
         System.out.println(result);
         System.out.println("요청확인용");
         return result;
     }
 
-    @GetMapping("/findFriendRequestByRequestedId")
+    /**
+     * 요청 받은 ID로 친구 요청 조회
+     *
+     * @param requestedId 요청 받은 ID
+     * @return 요청 받은 ID에 해당하는 친구 요청 목록을 계정 ID와 닉네임으로 묶어 List로 반환
+     */
+    @GetMapping("findFriendRequestByRequestedId")
     public List<List<String>> findFriendRequestByRequsetedId(String requestedId) {
-        List<List<String>> result = null;
+        List<List<String>> result = friendRequestService.findFriendRequestByRequestedId(requestedId);
         System.out.println(requestedId);
-        result = friendRequestService.findFriendRequestByRequestedId(requestedId);
-        return result;
-    }
-    @DeleteMapping("/accept")
-    public String accept(String id, String id1, String id2) {
-        System.out.println("친구요청수락--------------------------------");
-        String result = null;
-        result = friendRequestService.accept(id,id1,id2);
-        return result;
-    }
-    @DeleteMapping("/delete")
-    public String delete(String id) {
-        System.out.println("친구요청삭제--------------------------------");
-        String result = null;
-        result = friendRequestService.delete(id);
         return result;
     }
 
-//	@PostMapping("post")
-//	public String save(AccountDTO requestId, AccountDTO requestedId) {
-//		String msg = "?";
-//		requestId = AccountDTO.builder().accountId("1").pw("wer").hashSalt("12").pwQuestion("123").nickName("wqe")
-//				.build();
-//		requestedId = AccountDTO.builder().accountId("2").pw("wer").hashSalt("12").pwQuestion("123").nickName("wqe")
-//				.build();
-//		msg = friendRequestService.save(requestId, requestedId);
-//		return msg;
-//	}
+    /**
+     * 친구 요청 수락 처리
+     *
+     * @param id  친구 요청 ID
+     * @param id1 요청 보낸 사용자의 ID
+     * @param id2 요청 받은 사용자의 ID
+     * @return 친구 요청 수락 결과 메시지 반환
+     */
+    @DeleteMapping("accept")
+    public String accept(String id, String id1, String id2) {
+        System.out.println("친구요청수락--------------------------------");
+        String result = friendRequestService.accept(id, id1, id2);
+        return result;
+    }
+
+    /**
+     * 친구 요청 삭제 처리
+     *
+     * @param id 친구 요청 ID
+     * @return 친구 요청 삭제 결과 메시지 반환
+     */
+    @DeleteMapping("delete")
+    public String delete(String id) {
+        System.out.println("친구요청삭제--------------------------------");
+        String result = friendRequestService.delete(id);
+        return result;
+    }
 }

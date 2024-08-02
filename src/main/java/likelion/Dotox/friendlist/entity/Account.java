@@ -1,5 +1,9 @@
 package likelion.Dotox.friendlist.entity;
 
+import likelion.Dotox.friendlist.entity.FriendList;
+import likelion.Dotox.friendlist.entity.FriendRequest;
+
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -18,51 +22,51 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Schema(description = "사용자 계정 정보를 나타내는 엔티티")
+@Schema(description = "계정 정보를 담는 엔티티")
 public class Account {
 
     @Id
     @Column(name = "account_id")
-    @Schema(description = "사용자의 고유 ID", example = "user123")
+    @Schema(description = "계정 ID", example = "user123")
     private String accountId;
 
     @Column(name = "nick_name")
-    @Schema(description = "사용자의 닉네임", example = "John")
+    @Schema(description = "닉네임", example = "nickname")
     private String nickName;
 
     @Column(name = "email")
-    @Schema(description = "사용자의 이메일 주소", example = "john@example.com")
+    @Schema(description = "이메일 주소", example = "user@example.com")
     private String email;
 
     @Column(name = "hobby")
-    @Schema(description = "사용자의 취미", example = "독서")
+    @Schema(description = "취미", example = "reading")
     private String hobby;
 
     @Column(name = "gender")
-    @Schema(description = "사용자의 성별", example = "남성")
+    @Schema(description = "성별", example = "male")
     private String gender;
 
     @Column(name = "age")
-    @Schema(description = "사용자의 나이", example = "30")
+    @Schema(description = "나이", example = "30")
     private String age;
 
-    @Column(name = "time")
-    @Schema(description = "사용자가 활동한 시간", example = "120")
-    private int time;
+    @Column(name = "screen_time")
+    @Schema(description = "스크린 타임", example = "3600")
+    private Long screenTime;
 
     @OneToMany(mappedBy = "id1")
-    @Schema(description = "사용자와 관련된 친구 목록1")
+    @ArraySchema(schema = @Schema(description = "id1로 매핑된 친구 목록"))
     private List<FriendList> friendlist1 = new ArrayList<>();
 
     @OneToMany(mappedBy = "id2")
-    @Schema(description = "사용자와 관련된 친구 목록2")
+    @ArraySchema(schema = @Schema(description = "id2로 매핑된 친구 목록"))
     private List<FriendList> friendlist2 = new ArrayList<>();
 
     @OneToMany(mappedBy = "requestId")
-    @Schema(description = "사용자와 관련된 친구 요청 목록1")
+    @ArraySchema(schema = @Schema(description = "requestId로 매핑된 친구 요청 목록"))
     private List<FriendRequest> friendRequest1 = new ArrayList<>();
 
     @OneToMany(mappedBy = "requestedId")
-    @Schema(description = "사용자와 관련된 친구 요청 목록2")
+    @ArraySchema(schema = @Schema(description = "requestedId로 매핑된 친구 요청 목록"))
     private List<FriendRequest> friendRequest2 = new ArrayList<>();
 }

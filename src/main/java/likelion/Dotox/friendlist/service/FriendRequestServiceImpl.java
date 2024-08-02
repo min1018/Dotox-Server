@@ -27,88 +27,105 @@ public class FriendRequestServiceImpl implements FriendRequestService {
 
     private static ModelMapper modelMapper = new ModelMapper();
 
+    /**
+     * 주어진 requestId에 해당하는 친구 요청 목록을 조회합니다.
+     *
+     * @param requestId 요청을 보낸 사용자의 ID
+     * @return List<List<String>> 요청을 받은 사용자의 ID와 요청자의 ID로 구성된 리스트
+     */
     public List<List<String>> findFriendRequestByRequestId(String requestId) {
-        List<List<String>> result = null;
-        result = friendRequestRepository.findFriendRequestByRequestId(requestId);
-        return result;
+        return friendRequestRepository.findFriendRequestByRequestId(requestId);
     }
 
+    /**
+     * 주어진 requestedId에 해당하는 친구 요청 목록을 조회합니다.
+     *
+     * @param requestedId 요청을 받은 사용자의 ID
+     * @return List<List<String>> 요청을 보낸 사용자의 ID와 요청자의 ID로 구성된 리스트
+     */
     public List<List<String>> findFriendRequestByRequestedId(String requestedId) {
-        List<List<String>> result = null;
-        result = friendRequestRepository.findFriendRequestByRequestedId(requestedId);
-        return result;
+        return friendRequestRepository.findFriendRequestByRequestedId(requestedId);
     }
 
+    /**
+     * 주어진 requestId와 requestedId로 새로운 친구 요청을 저장합니다.
+     *
+     * @param requestId   요청을 보낸 사용자의 ID
+     * @param requestedId 요청을 받은 사용자의 ID
+     * @return String 저장 결과 메시지
+     */
+    public String save(String requestId, String requestedId) {
+        try {
+            Optional<Account> account1 = accountRepository.findById(requestId);
+            Optional<Account> account2 = accountRepository.findById(requestedId);
+
+            if (account1.isPresent() && account2.isPresent()) {
+                FriendRequest friendRequest = new FriendRequest();
+                friendRequest.setRequestId(account1.get());
+                friendRequest.setRequestedId(account2.get());
+                friendRequestRepository.save(friendRequest);
+                return "친구 신청을 보냈습니다";
+            } else {
+                return "계정이 존재하지 않습니다";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "친구 신청에 실패했습니다";
+        }
+    }
+
+    /**
+     * 주어진 requestId로 친구 요청을 수락합니다.
+     *
+     * @param id  요청 ID
+     * @param id1 요청을 받은 사용자의 ID
+     * @param id2 요청을 보낸 사용자의 ID
+     * @return String 수락 결과 메시지
+     */
     public String accept(String id, String id1, String id2) {
         try {
-            Integer a = null;
-            a = Integer.parseInt(id);
-            friendRequestRepository.deleteById(a);
-            /*
-             * friendRequestRepository.deleteByRequestedIdAccountIdAndRequestIdAccountId(id1
-             * ,id2); No EntityManager with actual transaction available for current thread
-             * - cannot reliably process 'remove' call; nested exception is
-             * javax.persistence.TransactionRequiredException: No EntityManager with actual
-             * transaction available for current thread - cannot reliably process 'remove'
-             * call
-             */
-            List<FriendRequest> aaa = friendRequestRepository.findByRequestIdAccountIdAndRequestedIdAccountId(id2, id1);
-            if (aaa.size()!=0) {
-                friendRequestRepository.deleteById(aaa.get(0).getId());
-            }
+            Long requestId = Long.parseLong(id);
+            friendRequestRepository.deleteById(requestId);
 
+            Optional<Account> account1 = accountRepository.findById(id1);
+            Optional<Account> account2 = accountRepository.findById(id2);
 
-            Optional<Account> result1 = accountRepository.findById(id1);
-            Optional<Account> result2 = accountRepository.findById(id2);
-            AccountDTO result3 = null;
-            AccountDTO result4 = null;
-            if (result1.isPresent()) {
-                result3 = modelMapper.map(result1.get(), AccountDTO.class);
-            }
-            if (result2.isPresent()) {
-                result4 = modelMapper.map(result2.get(), AccountDTO.class);
-            }
-            FriendListDTO result = FriendListDTO.builder().id1(result3).id2(result4).build();
-            friendListRepository.save(modelMapper.map(result, FriendList.class));
-            FriendListDTO resultt = FriendListDTO.builder().id2(result3).id1(result4).build();
-            friendListRepository.save(modelMapper.map(resultt, FriendList.class));
-            return "수락요청";
+            if (account1.isPresent() && account2.isPresent()) {
+                FriendList friendList1 = new FriendList();
+                friendList1.setId1(account1.get());
+                friendList1.setId2(account2.get());
 
+                FriendList friendList2 = new FriendList();
+                friendList2.setId1(account2.get());
+                friendList2.setId2(account1.get());
+
+                friendListRepository.save(friendList1);
+                friendListRepository.save(friendList2);
+
+                return "수락요청";
+            } else {
+                return "계정이 존재하지 않습니다";
+            }
         } catch (Exception e) {
             e.printStackTrace();
             return "수락하는 과정 중 오류가 발생했습니다";
         }
     }
 
+    /**
+     * 주어진 requestId로 친구 요청을 삭제합니다.
+     *
+     * @param id 요청 ID
+     * @return String 삭제 결과 메시지
+     */
     public String delete(String id) {
         try {
-            Integer id2 = null;
-            id2 = Integer.parseInt(id);
-            friendRequestRepository.deleteById(id2);
+            Long requestId = Long.parseLong(id);
+            friendRequestRepository.deleteById(requestId);
             return "수락삭제완료";
         } catch (Exception e) {
             e.printStackTrace();
             return "수락삭제하는 과정 중 오류가 발생했습니다";
         }
     }
-
-//	public String save(AccountDTO requestId, AccountDTO requestedId) {
-//		System.out.println(requestId);
-//		try {
-//			Account account1 = modelMapper.map(requestId, Account.class);
-//			Account account2 = modelMapper.map(requestedId, Account.class);
-//			System.out.println(account1);
-////			FriendRequest friendRequest = new FriendRequest();
-////			friendRequest.setRequestId(account1);
-////			friendRequest.setRequestedId(account2);
-//			FriendRequest friendRequest = modelMapper.map(requestedId, FriendRequest.class);
-//			System.out.println(friendRequest);
-//			friendRequestRepository.save(friendRequest);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			return "친구 신청에 실패했습니다";
-//		}
-//		return "친구 신청을 보냈습니다";
-//	}
-
 }

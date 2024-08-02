@@ -1,6 +1,9 @@
 package likelion.Dotox.friendlist.entity;
 
+import likelion.Dotox.friendlist.entity.Account;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,31 +18,29 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-
+@Schema(description = "친구 목록 정보를 담는 엔티티")
 public class FriendList implements Serializable {
 
-    // pk
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Schema(description = "친구 목록 ID", example = "1")
+    private Long id;
 
-    // 나의 아이디
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id1")
-    @JsonIgnore
+    @Schema(description = "나의 계정 정보")
     private Account id1;
 
-    // 친구의 아이디
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id2")
-    @JsonIgnore
+    @Schema(description = "친구의 계정 정보")
     private Account id2;
 
-    // 나의 스크린타임
     @Column(name = "id1_screentime")
+    @Schema(description = "나의 스크린 타임", example = "2024-08-02T11:59:04.122Z")
     private LocalDateTime id1ScreenTime;
 
-    // 친구의 스크린타임
     @Column(name = "id2_screentime")
+    @Schema(description = "친구의 스크린 타임", example = "2024-08-02T11:59:04.122Z")
     private LocalDateTime id2ScreenTime;
 }

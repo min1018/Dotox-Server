@@ -1,10 +1,12 @@
 package likelion.Dotox.friendlist.service;
 
 import likelion.Dotox.friendlist.dto.FriendListDTO;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public interface FriendListService {
 
     /**

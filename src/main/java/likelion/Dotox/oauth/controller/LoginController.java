@@ -6,11 +6,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpSession;
 import likelion.Dotox.hobby.service.HobbyService;
 import likelion.Dotox.oauth.dto.OAuth2Response;
+import likelion.Dotox.oauth.service.CustomOAuth2Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -24,11 +23,13 @@ public class LoginController {
 
     private final HttpSession httpSession;
     private final HobbyService hobbyService;
+    private final CustomOAuth2Service customOAuth2Service;
 
     @Autowired
-    public LoginController(HttpSession httpSession, HobbyService hobbyService) {
+    public LoginController(HttpSession httpSession, HobbyService hobbyService, CustomOAuth2Service customOAuth2Service) {
         this.httpSession = httpSession;
         this.hobbyService = hobbyService;
+        this.customOAuth2Service = customOAuth2Service;
     }
 
     @Operation(
@@ -47,6 +48,36 @@ public class LoginController {
     )
     public void googleLogin(HttpServletResponse response) throws IOException {
         response.sendRedirect("/oauth2/authorization/google");
+    }
+
+    @PostMapping("/oauth2/token")
+    @Operation(
+            summary = "OAuth2 토큰 교환",
+            description = "프론트엔드로부터 인증 코드를 받아 토큰으로 교환하고 사용자 정보를 반환합니다.",
+            responses = {
+                    @ApiResponse(description = "OAuth2 토큰이 성공적으로 교환됨", responseCode = "200"),
+                    @ApiResponse(description = "인증 코드가 유효하지 않음", responseCode = "400")
+            }
+    )
+    public ResponseEntity<Map<String, Object>> getToken(@RequestBody Map<String, String> body) {
+        String code = body.get("code");
+        String provider = body.get("provider");
+
+        OAuth2Response oAuth2Response = customOAuth2Service.getAccessToken(code, provider);
+        if (oAuth2Response != null) {
+            httpSession.setAttribute("oAuth2Response", oAuth2Response);
+
+            String accountId = oAuth2Response.getProviderId();
+            boolean isInitialUser = hobbyService.initialUser(accountId);
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("accountId", accountId);
+            response.put("isInitialUser", isInitialUser);
+
+            return ResponseEntity.ok(response);
+        } else {
+            throw new IllegalArgumentException("Invalid authorization code or provider");
+        }
     }
 
     @GetMapping("/oauth2/response")

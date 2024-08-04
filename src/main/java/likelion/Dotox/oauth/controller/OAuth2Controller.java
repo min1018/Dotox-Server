@@ -1,5 +1,7 @@
 package likelion.Dotox.oauth.controller;
 
+import jakarta.servlet.http.HttpSession;
+import likelion.Dotox.hobby.service.HobbyService;
 import likelion.Dotox.oauth.service.OAuth2Service;
 import lombok.Value;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,7 @@ public class OAuth2Controller {
     public OAuth2Controller(OAuth2Service oAuth2Service) {
         this.oAuth2Service = oAuth2Service;
     }
+
 
     @GetMapping("/login/naver")
     public ResponseEntity<String> getNaverLoginUrl() {

@@ -1,72 +1,94 @@
 package likelion.Dotox.oauth.service;
 
+import likelion.Dotox.friendlist.entity.Account;
+import likelion.Dotox.friendlist.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.HashMap;
 import java.util.Map;
 
 @Service
 public class OAuth2Service {
-
-    @Value("${spring.security.oauth2.client.registration.naver.client-id}")
-    private String naverClientId;
-
-    @Value("${spring.security.oauth2.client.registration.naver.client-secret}")
-    private String naverClientSecret;
-
+    private final AccountRepository accountRepository;
     private final RestTemplate restTemplate;
 
-    public OAuth2Service(RestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
+    @Value("${spring.security.oauth2.client.registration.naver.client-id}")
+    private String clientId;
+
+    @Value("${spring.security.oauth2.client.registration.naver.client-secret}")
+    private String clientSecret;
+
+    @Value("${spring.security.oauth2.client.registration.naver.redirect-uri}")
+    private String redirectUri;
+
+    public OAuth2Service(AccountRepository accountRepository) {
+        this.accountRepository = accountRepository;
+        this.restTemplate = new RestTemplate();
     }
 
-
-    public String getNaverLoginUrl() {
-        String redirectUri = "http://localhost:8080/oauth2/callback/naver";
-        String state = "state";
-
-        return "https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id="
-                + naverClientId + "&redirect_uri=" + redirectUri + "&state=" + state;
-    }
-
-    public Map<String, Object> exchangeNaverCodeForTokens(String code) {
-        MultiValueMap<String, String> naverParams = new LinkedMultiValueMap<>();
-        naverParams.add("grant_type", "authorization_code");
-        naverParams.add("client_id", naverClientId);
-        naverParams.add("client_secret", naverClientSecret);
-        naverParams.add("code", code);
-
-        String naverTokenUri = "https://nid.naver.com/oauth2.0/token";
+    public String getAccessToken(String code, String state) {
+        String url = "https://nid.naver.com/oauth2.0/token?grant_type=authorization_code"
+                + "&client_id=" + clientId
+                + "&client_secret=" + clientSecret
+                + "&code=" + code
+                + "&state=" + state
+                + "&redirect_uri=" + redirectUri;
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(naverParams, headers);
 
-        ResponseEntity<Map<String, Object>> responseEntity = restTemplate.exchange(
-                naverTokenUri,
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        ResponseEntity<Map<String, Object>> response = restTemplate.exchange(
+                url,
                 HttpMethod.POST,
-                requestEntity,
+                entity,
                 new ParameterizedTypeReference<Map<String, Object>>() {}
         );
 
-        return responseEntity.getBody();
+        Map<String, Object> responseBody = response.getBody();
+
+        if (responseBody.containsKey("error")) {
+            throw new RuntimeException("Error fetching access token: " + responseBody.get("error_description"));
+        }
+
+        return (String) responseBody.get("access_token");
     }
 
-    public Map<String, Object> getNaverUserProfile(String accessToken) {
-        String profileUri = "https://openapi.naver.com/v1/nid/me";
+    public Account getUserInfo(String accessToken) {
+        String url = "https://openapi.naver.com/v1/nid/me";
         HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", "Bearer " + accessToken);
-
+        headers.setBearerAuth(accessToken);
         HttpEntity<String> entity = new HttpEntity<>(headers);
-        ResponseEntity<Map> responseEntity = restTemplate.exchange(profileUri, HttpMethod.GET, entity, Map.class);
 
-        return responseEntity.getBody();
+        ResponseEntity<Map<String, Object>> response = restTemplate.exchange(
+                url,
+                HttpMethod.GET,
+                entity,
+                new ParameterizedTypeReference<Map<String, Object>>() {}
+        );
+
+        Map<String, Object> userAttributes = (Map<String, Object>) response.getBody().get("response");
+
+        String accountId = (String) userAttributes.get("id");
+        String email = (String) userAttributes.get("email");
+        String nickName = (String) userAttributes.get("nickname");
+        String gender = (String) userAttributes.get("gender");
+        String age = (String) userAttributes.get("age");
+
+        Account account = accountRepository.findByAccountId(accountId);
+        if (account == null) {
+            account = new Account();
+            account.setAccountId(accountId);
+        }
+        account.setEmail(email);
+        account.setNickName(nickName);
+        account.setGender(gender);
+        account.setAge(age);
+
+        return accountRepository.save(account);
     }
 }

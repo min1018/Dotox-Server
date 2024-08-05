@@ -34,7 +34,7 @@ public class CustomOAuth2Service {
             //params.put("client_id", env)
             params.put("client_id", "566890532564-tt49qte30p094a9ar9l78erjjhr899se.apps.googleusercontent.com");
             params.put("client_secret", "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");
-            params.put("redirect_uri", "http://localhost:8080/api/redirect");
+            params.put("redirect_uri", "http://localhost:8080/api/oauth2/token");
             //params.put("redirect_uri", "http://localhost:8080/api/oauth2/token");
             params.put("grant_type", "authorization_code");
         } else if (provider.equals("naver")) {

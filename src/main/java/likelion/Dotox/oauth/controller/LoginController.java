@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -50,6 +52,11 @@ public class LoginController {
         response.sendRedirect("/oauth2/authorization/google");
     }
 
+//    @GetMapping("/redirect")
+//    public void check(String code, RedirectAttributes attr) {
+//        System.out.println(code);
+//    }
+
     @PostMapping("/oauth2/token")
     @Operation(
             summary = "OAuth2 토큰 교환",
@@ -64,6 +71,7 @@ public class LoginController {
         String provider = body.get("provider");
 
         OAuth2Response oAuth2Response = customOAuth2Service.getAccessToken(code, provider);
+        System.out.println("토큰 " + oAuth2Response.getProviderId());
         if (oAuth2Response != null) {
             httpSession.setAttribute("oAuth2Response", oAuth2Response);
 
@@ -79,6 +87,7 @@ public class LoginController {
             throw new IllegalArgumentException("Invalid authorization code or provider");
         }
     }
+
 
     @GetMapping("/oauth2/response")
     @Operation(

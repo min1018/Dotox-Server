@@ -56,3 +56,8 @@ public class SecurityConfig {
         return new CustomSuccessHandler();
     }
 }
+
+//1. 면접 분위기
+//2. 프젝 어떤거 하셨는지 - 데이터 활용한 프젝 하셨는지
+//3. 스프링 어떻게 공부하셨는지 - 인강, 책 어떤 순서로 공부하셨는지
+//4. 코테 어떻게 준비 -> 다른 기업은 어떻게
